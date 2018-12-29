@@ -124,19 +124,22 @@ class GetHandler(BaseHTTPRequestHandler):
         # create a display image command, send it to
         # the micro:bit and send an HTTP reply to Scratch
         if cmd == 'display_image':
-            resp = self.s2m.handle_display_image(cmd_list[1])
+            params = cmd_list[1:]
+            cmd_params = ",".join(params)
+            resp = self.s2m.handle_display_image(cmd_params) 
             self.send_resp(resp)
 
         # create a scroll command, send it to
         # the micro:bit and send an HTTP reply to Scratch
         elif cmd == 'scroll':
-            resp = self.s2m.handle_scroll(cmd_list[1])
+            params = cmd_list[1:]
+            cmd_params = ",".join(params)
+            resp = self.s2m.handle_scroll(cmd_params)
             self.send_resp(resp)
-
         # create a write pixel command, send it to
         # the micro:bit and send an HTTP reply to Scratch
         elif cmd == 'write_pixel':
-            params = cmd_list[1:]
+            params = cmd_list[1:] 
             cmd_params = ",".join(params)
             resp = self.s2m.handle_write_pixel(cmd_params)
             self.send_resp(resp)
@@ -165,6 +168,11 @@ class GetHandler(BaseHTTPRequestHandler):
 
         elif cmd == 'reset_all':
             resp = self.s2m.handle_reset_all()
+            self.send_resp(resp)
+
+        # temperature  --estea
+        elif cmd == 'temperature':
+            resp = self.s2m.handle_temp() 
             self.send_resp(resp)
 
         # received an unknown command, just send a response to Scratch

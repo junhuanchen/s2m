@@ -167,8 +167,7 @@ class S2M:
             detected = None
             for device in locations:
                 try:
-                    self.micro_bit_serial = serial.Serial(port=device, baudrate=115200,
-                                                          timeout=.1)
+                    self.micro_bit_serial = serial.Serial(port=device, baudrate=115200,timeout=0.1)
                     detected = device
                     break
                 except serial.SerialException:
@@ -357,14 +356,16 @@ class S2M:
         """
         self.ignore_poll = True
         resp = self.send_command('g')
+        print(resp)
         resp = resp.lower()
         reply = resp.split(',')
 
         # if this reply is not the correct length, just toss it.
-        if len(reply) > 12:
+        if len(reply) > 15:
             return ''
 
         resp = self.build_poll_response(reply)
+        print(resp)
         return resp
 
     def handle_display_image(self, data):
@@ -388,9 +389,8 @@ class S2M:
 
         :param data: text to scroll
         """
-
         data = self.scratch_fix(data)
-        self.send_command('s,' + data)
+        self.send_command('s,' + data )
 
     def handle_write_pixel(self, data):
         """
@@ -421,6 +421,13 @@ class S2M:
         :param data: pin and value
         """
         self.send_command('a,' + data)
+
+    ### estea set led color
+    #def handle_set_color(self, data):
+    #    """
+    #    This method is set rgb led color
+    #    """
+    #    self.send_command('co,' +data )
 
     def handle_reset_all(self):
         """
@@ -454,6 +461,7 @@ class S2M:
         reply = ''
 
         # build gestures
+        print(data_list)
         x = int(data_list[0])
         y = int(data_list[1])
         z = int(data_list[2])
@@ -499,6 +507,13 @@ class S2M:
         reply += 'analog_read/0 ' + data_list[8] + '\n'
         reply += 'analog_read/1 ' + data_list[9] + '\n'
         reply += 'analog_read/2 ' + data_list[10] + '\n'
+        ### estea add temperature 2018-12-26
+        reply += 'temperature ' + data_list[11] + '\n'
+        reply += 'l_light ' + data_list[12] + '\n'
+        reply += 'r_light ' + data_list[13] + '\n'
+        #reply += 'color_red ' + data_list[14] + '\n'
+        #reply += 'color_green ' + data_list[15] + '\n'
+        #reply += 'color_blue ' + data_list[16] + '\n'
 
         return reply
 
