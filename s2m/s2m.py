@@ -295,7 +295,7 @@ class S2M:
                 self.scratch_executable = "/opt/Scratch\ 2/bin/Scratch\ 2"
 
         if self.language == '0':
-            self.scratch_project = self.base_path + "/scratch_files/projects/s2m.sb2"
+            self.scratch_project = self.base_path + "/scratch_files/projects/s2m-bpi-bit.sb2"
         elif self.language == '1':
             self.scratch_project = self.base_path + "/scratch_files/projects/s2m_ja.sb2"
         elif self.language == 'ja':
@@ -514,7 +514,8 @@ class S2M:
         #reply += 'color_red ' + data_list[14] + '\n'
         #reply += 'color_green ' + data_list[15] + '\n'
         #reply += 'color_blue ' + data_list[16] + '\n'
-
+        import time
+        time.sleep(0.1)
         return reply
 
     def send_command(self, command):
