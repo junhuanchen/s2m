@@ -175,8 +175,7 @@ class S2M:
                         print('Unable to find Serial Port, Please plug in '
                               'cable or check cable connections.')
                         detected = None
-                        # sys.exit(0)
-                    raise Exception('serial.SerialException')
+                        exit()
                 except OSError:
                     pass
             self.com_port = detected
@@ -192,8 +191,7 @@ class S2M:
             except serial.SerialException:
                 print('Unable to find Serial Port, Please plug in '
                       'cable or check cable connections.')
-                # sys.exit(0)
-                raise Exception('Serial Port No Found')
+                exit()
             except OSError:
                 pass
             time.sleep(.05)
@@ -209,7 +207,6 @@ class S2M:
                 print('Unable to detect Serial Port, Please plug in '
                       'cable or check cable connections.')
                 # sys.exit(0)
-                raise Exception('Serial Port No detect')
         # read and decode a line and strip it of trailing \r\n
         # save the data for the first poll received
         self.last_poll_result = self.micro_bit_serial.readline().decode().strip()
@@ -226,7 +223,6 @@ class S2M:
             if time.time() - sent_time > 2:
                 print('Unable to retrieve version s2mb.py on the micro:bit.')
                 print('Have you flashed the latest version?')
-                raise Exception('micro_bit_serial')
                 # sys.exit(0)
 
         v_string = self.micro_bit_serial.readline().decode().strip()
@@ -246,9 +242,8 @@ class S2M:
         try:
             start_server(self)
         except KeyboardInterrupt:
-            raise Exception('KeyboardInterrupt')
+            raise KeyboardInterrupt
             # sys.exit(0)
-            pass
 
     def find_base_path(self):
         """
@@ -281,12 +276,10 @@ class S2M:
             if not self.base_path:
                 print('Cannot locate s2m files on path.')
                 print('Python path = ' + str(self.base_path))
-                raise Exception('self.base_path')
                 # sys.exit(0)
 
             if self.display_base_path:
                 print('Python path = ' + str(self.base_path))
-                raise Exception('self.display_base_path')
                 # sys.exit(0)
 
     def auto_load_scratch(self):
@@ -645,9 +638,10 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        raise Exception('KeyboardInterrupt')
+        raise KeyboardInterrupt
         # sys.exit(0)
     except Exception as e:
         print(e)
     import os
-    os.system("pause")
+    os.system('pause')
+
